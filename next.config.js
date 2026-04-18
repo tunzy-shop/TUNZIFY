@@ -4,6 +4,9 @@ const nextConfig = {
   images: {
     domains: ['image.tmdb.org'],
   },
+  // THIS IS CRITICAL - ensures CSS loads properly
+  distDir: '.next',
+  generateEtags: false,
 }
 
 module.exports = nextConfig

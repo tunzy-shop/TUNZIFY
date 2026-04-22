@@ -37,10 +37,10 @@ export default function MovieDetail() {
     );
   }
 
-  if (!movie) {
+  if (!movie || movie.error) {
     return (
       <div className="detail-page" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 16 }}>
-        <p style={{ color: '#aaa', fontSize: 18 }}>Movie not found.</p>
+        <p style={{ color: '#7a8fa8', fontSize: 18 }}>Movie not found.</p>
         <button className="back-btn" style={{ position: 'static' }} onClick={() => router.push('/')}>← Go Home</button>
       </div>
     );
@@ -54,7 +54,7 @@ export default function MovieDetail() {
       <div className="detail-backdrop">
         {movie.poster
           ? <img src={movie.poster} alt={movie.title} />
-          : <div style={{ width: '100%', height: '100%', background: '#1a1a1a' }} />
+          : <div style={{ width: '100%', height: '100%', background: '#0d1526' }} />
         }
         <div className="detail-backdrop-overlay" />
       </div>
@@ -64,7 +64,7 @@ export default function MovieDetail() {
         <div className="detail-poster">
           {movie.poster
             ? <img src={movie.poster} alt={movie.title} />
-            : <div style={{ aspectRatio: '2/3', background: '#1a1a1a', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#333', fontSize: 13 }}>No Poster</div>
+            : <div style={{ aspectRatio: '2/3', background: '#111827', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#3d4f65', fontSize: 13 }}>No Poster</div>
           }
         </div>
 
@@ -84,7 +84,7 @@ export default function MovieDetail() {
           <p className="detail-description">{movie.description || 'No description available.'}</p>
 
           <div className="download-section">
-            <h3 className="download-title">📥 Download Options</h3>
+            <h3 className="download-title">↓ Download Options</h3>
             {downloadLinks.length > 0 ? (
               <div className="download-links">
                 {downloadLinks.map((link, i) => (
@@ -94,7 +94,7 @@ export default function MovieDetail() {
                 ))}
               </div>
             ) : (
-              <p style={{ color: '#555', fontSize: 14 }}>No download links available.</p>
+              <p style={{ color: '#3d4f65', fontSize: 14 }}>No download links available.</p>
             )}
           </div>
         </div>

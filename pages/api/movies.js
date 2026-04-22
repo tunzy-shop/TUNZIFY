@@ -1,82 +1,135 @@
 import axios from 'axios';
 
-// Using DavidCyril API - FREE, no key needed
 const API_BASE = 'https://apis.davidcyril.name.ng';
+
+// Map raw API result to clean movie object
+function mapMovie(m) {
+  return {
+    id: m.slug || m.id || m._id,
+    title: m.title || m.name,
+    description: m.description || m.plot || m.overview || '',
+    poster: m.poster || m.image || m.cover || m.thumbnail || '',
+    year: m.year || m.date?.split?.(' ')?.[0] || m.releaseDate?.split?.('-')?.[0] || '',
+    rating: m.rating || m.imdbRating || '',
+    categories: m.categories || m.genres || m.tags || [],
+  };
+}
 
 export default async function handler(req, res) {
   const { type, query, id, limit = 20 } = req.query;
 
   try {
-    // Get trending movies
+    // TRENDING
     if (type === 'trending') {
-      const response = await axios.get(`${API_BASE}/movies/fzmovies/latest`, {
-        params: { limit: 20 }
-      });
-      
-      const movies = (response.data.results || []).map(m => ({
-        id: m.slug,
-        title: m.title,
-        description: m.description,
-        poster: m.poster,
-        year: m.date?.split(' ')[0]
-      }));
-      
+      let movies = [];
+
+      // Try fzmovies trending first, fallback to latest
+      const endpoints = [
+        `${API_BASE}/movies/fzmovies/trending`,
+        `${API_BASE}/movies/fzmovies/latest`,
+        `${API_BASE}/movies/latest`,
+      ];
+
+      for (const url of endpoints) {
+        try {
+          const r = await axios.get(url, { params: { limit }, timeout: 8000 });
+          const raw = r.data?.results || r.data?.movies || r.data?.data || r.data || [];
+          if (Array.isArray(raw) && raw.length > 0) {
+            movies = raw.map(mapMovie);
+            break;
+          }
+        } catch {}
+      }
+
       return res.status(200).json(movies);
     }
 
-    // Get latest movies
+    // LATEST
     if (type === 'latest') {
-      const response = await axios.get(`${API_BASE}/movies/fzmovies/latest`, {
-        params: { limit: 20 }
-      });
-      
-      const movies = (response.data.results || []).map(m => ({
-        id: m.slug,
-        title: m.title,
-        description: m.description,
-        poster: m.poster
-      }));
-      
+      let movies = [];
+
+      const endpoints = [
+        `${API_BASE}/movies/fzmovies/latest`,
+        `${API_BASE}/movies/latest`,
+      ];
+
+      for (const url of endpoints) {
+        try {
+          const r = await axios.get(url, { params: { limit }, timeout: 8000 });
+          const raw = r.data?.results || r.data?.movies || r.data?.data || r.data || [];
+          if (Array.isArray(raw) && raw.length > 0) {
+            movies = raw.map(mapMovie);
+            break;
+          }
+        } catch {}
+      }
+
       return res.status(200).json(movies);
     }
 
-    // Search movies
+    // SEARCH
     if (type === 'search' && query) {
-      const response = await axios.get(`${API_BASE}/movies/fzmovies/search`, {
-        params: { q: query, limit: 20 }
-      });
-      
-      const movies = (response.data.results || []).map(m => ({
-        id: m.slug,
-        title: m.title,
-        description: m.description,
-        poster: m.poster
-      }));
-      
+      let movies = [];
+
+      const endpoints = [
+        { url: `${API_BASE}/movies/fzmovies/search`, params: { q: query, limit } },
+        { url: `${API_BASE}/movies/search`, params: { query, limit } },
+      ];
+
+      for (const ep of endpoints) {
+        try {
+          const r = await axios.get(ep.url, { params: ep.params, timeout: 8000 });
+          const raw = r.data?.results || r.data?.movies || r.data?.data || r.data || [];
+          if (Array.isArray(raw) && raw.length > 0) {
+            movies = raw.map(mapMovie);
+            break;
+          }
+        } catch {}
+      }
+
       return res.status(200).json(movies);
     }
 
-    // Get movie details
+    // DETAILS
     if (type === 'details' && id) {
-      const response = await axios.get(`${API_BASE}/movies/fzmovies/info`, {
-        params: { slug: id }
-      });
-      
-      return res.status(200).json(response.data);
+      const endpoints = [
+        { url: `${API_BASE}/movies/fzmovies/info`, params: { slug: id } },
+        { url: `${API_BASE}/movies/fzmovies/details`, params: { slug: id } },
+        { url: `${API_BASE}/movies/info`, params: { id } },
+      ];
+
+      for (const ep of endpoints) {
+        try {
+          const r = await axios.get(ep.url, { params: ep.params, timeout: 8000 });
+          if (r.data && (r.data.title || r.data.name)) {
+            return res.status(200).json(mapMovie(r.data));
+          }
+        } catch {}
+      }
+
+      return res.status(404).json({ error: 'Movie not found' });
     }
 
-    // Get download links
+    // DOWNLOAD
     if (type === 'download' && id) {
-      const response = await axios.get(`${API_BASE}/movies/fzmovies/download`, {
-        params: { slug: id }
-      });
-      
-      return res.status(200).json(response.data);
+      const endpoints = [
+        { url: `${API_BASE}/movies/fzmovies/download`, params: { slug: id } },
+        { url: `${API_BASE}/movies/download`, params: { id } },
+      ];
+
+      for (const ep of endpoints) {
+        try {
+          const r = await axios.get(ep.url, { params: ep.params, timeout: 8000 });
+          if (r.data) return res.status(200).json(r.data);
+        } catch {}
+      }
+
+      return res.status(200).json({ links: [] });
     }
 
-    res.status(400).json({ error: 'Invalid request' });
+    res.status(400).json({ error: 'Invalid request type' });
   } catch (error) {
     console.error('API Error:', error.message);
-    res.status(500).json({ error: 'Failed to fetch movies' });
+    res.status(500).json({ error: 'Failed to fetch data' });
   }
 }

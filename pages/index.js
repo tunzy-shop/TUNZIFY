@@ -8,6 +8,7 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [heroIndex, setHeroIndex] = useState(0);
+  const [activeNav, setActiveNav] = useState('home');
   const router = useRouter();
 
   useEffect(() => {
@@ -43,7 +44,7 @@ export default function Home() {
     } catch (e) { console.error(e); }
   };
 
-  const clearSearch = () => { setSearchQuery(''); setSearchResults([]); };
+  const clearSearch = () => { setSearchQuery(''); setSearchResults([]); setActiveNav('home'); };
 
   const goToMovie = (id) => router.push(`/movie/${id}`);
 
@@ -82,11 +83,13 @@ export default function Home() {
       {/* HEADER */}
       <header className="header">
         <div className="header-content">
-          <a href="/"><img src="/logo.jpg" alt="TUNZIFY" style={{height:"40px",width:"40px",objectFit:"contain",borderRadius:"6px"}} /></a>
+          <a href="/">
+            <img src="/logo.jpg" alt="TUNZIFY" style={{height:"38px",width:"38px",objectFit:"contain",borderRadius:"6px"}} />
+          </a>
           <nav className="nav-links">
-            <button className="nav-link" onClick={() => clearSearch()}>Home</button>
-            <button className="nav-link" onClick={() => clearSearch()}>Trending</button>
-            <button className="nav-link" onClick={() => clearSearch()}>Latest</button>
+            <button className="nav-link" onClick={clearSearch}>Home</button>
+            <button className="nav-link" onClick={clearSearch}>Trending</button>
+            <button className="nav-link" onClick={clearSearch}>Latest</button>
           </nav>
           <form onSubmit={handleSearch} className="search-wrapper">
             <span className="search-icon">🔍</span>
@@ -138,10 +141,10 @@ export default function Home() {
                 )}
                 <div className="hero-buttons">
                   <button className="btn-play" onClick={() => goToMovie(currentHero?.id)}>
-                    ▶ Watch Now
+                    ▶ More Info
                   </button>
                   <button className="btn-info" onClick={() => goToMovie(currentHero?.id)}>
-                    ℹ More Info
+                    ⊙ Watch Trailer
                   </button>
                 </div>
               </div>
@@ -162,8 +165,8 @@ export default function Home() {
             {trending.length > 0 && (
               <section className="section">
                 <div className="section-header">
-                  <h2 className="section-title">🔥 Trending Now</h2>
-                  <button className="section-more">See All</button>
+                  <h2 className="section-title">Popular Series</h2>
+                  <button className="section-more">More →</button>
                 </div>
                 <div className="scroll-row">
                   {trending.map(m => <MovieCard key={m.id} movie={m} />)}
@@ -174,8 +177,8 @@ export default function Home() {
             {latest.length > 0 && (
               <section className="section">
                 <div className="section-header">
-                  <h2 className="section-title">🍿 Latest Releases</h2>
-                  <button className="section-more">See All</button>
+                  <h2 className="section-title">Latest Releases</h2>
+                  <button className="section-more">More →</button>
                 </div>
                 <div className="scroll-row">
                   {latest.map(m => <MovieCard key={m.id} movie={m} />)}
@@ -189,6 +192,40 @@ export default function Home() {
           </footer>
         </>
       )}
+
+      {/* BOTTOM NAV - mobile */}
+      <nav className="bottom-nav">
+        <div className="bottom-nav-inner">
+          <button
+            className={`bottom-nav-item${activeNav === 'home' ? ' active' : ''}`}
+            onClick={() => { clearSearch(); setActiveNav('home'); }}
+          >
+            <span className="bottom-nav-icon">⌂</span>
+            Home
+          </button>
+          <button
+            className={`bottom-nav-item${activeNav === 'search' ? ' active' : ''}`}
+            onClick={() => setActiveNav('search')}
+          >
+            <span className="bottom-nav-icon">⌕</span>
+            Search
+          </button>
+          <button
+            className={`bottom-nav-item${activeNav === 'trending' ? ' active' : ''}`}
+            onClick={() => setActiveNav('trending')}
+          >
+            <span className="bottom-nav-icon">↗</span>
+            Trending
+          </button>
+          <button
+            className={`bottom-nav-item${activeNav === 'downloads' ? ' active' : ''}`}
+            onClick={() => setActiveNav('downloads')}
+          >
+            <span className="bottom-nav-icon">↓</span>
+            Downloads
+          </button>
+        </div>
+      </nav>
     </>
   );
 }

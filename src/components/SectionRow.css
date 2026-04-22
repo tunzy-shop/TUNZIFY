@@ -1,0 +1,12 @@
+.srow { padding: 36px 0; }
+.srow-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; }
+.srow-title { display: flex; align-items: center; gap: 10px; font-family: var(--font-display); font-size: 21px; font-weight: 700; color: var(--white); letter-spacing: 0.5px; }
+.srow-bar { width: 4px; height: 21px; border-radius: 2px; background: linear-gradient(180deg, var(--blue-bright), var(--blue-glow)); box-shadow: 0 0 10px rgba(59,130,246,0.5); flex-shrink: 0; }
+.srow-viewall { display: flex; align-items: center; gap: 4px; font-size: 12.5px; font-weight: 600; color: var(--blue-glow); padding: 6px 14px; border: 1px solid rgba(59,130,246,0.2); border-radius: var(--radius); transition: var(--ease); }
+.srow-viewall:hover { background: rgba(59,130,246,0.1); border-color: var(--blue-bright); color: var(--white); }
+.srow-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(165px, 1fr)); gap: 16px; }
+.srow-skeleton { aspect-ratio: 2/3; min-height: 260px; }
+@media (max-width: 768px) {
+  .srow { padding: 24px 0; }
+  .srow-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
+}

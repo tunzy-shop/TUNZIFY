@@ -1,0 +1,5 @@
+.home { min-height: 100vh; }
+.home-sections { padding-bottom: 60px; }
+.anime-divider { text-align: center; margin: 20px 0 10px; position: relative; }
+.anime-divider::before { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: var(--border); }
+.anime-divider span { position: relative; background: var(--bg-primary); padding: 0 20px; font-family: var(--font-display); font-size: 18px; font-weight: 700; color: var(--white); letter-spacing: 2px; }

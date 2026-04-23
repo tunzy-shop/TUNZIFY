@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
-import { Search, Menu, X, Film, Tv, Home } from 'lucide-react'
+import { Search, Menu, X, Film, Tv, Home, TrendingUp } from 'lucide-react'
 import './Navbar.css'
 
 export default function Navbar() {
@@ -27,7 +27,8 @@ export default function Navbar() {
   const links = [
     { to: '/', label: 'Home', icon: <Home size={15} /> },
     { to: '/movies', label: 'Movies', icon: <Film size={15} /> },
-    { to: '/anime', label: 'Anime', icon: <Tv size={15} /> },
+    { to: '/tv', label: 'TV Shows', icon: <Tv size={15} /> },
+    { to: '/anime', label: 'Anime', icon: <TrendingUp size={15} /> },
   ]
 
   return (
@@ -54,7 +55,7 @@ export default function Navbar() {
       <div className={`nav-search-bar ${searchOpen ? 'open' : ''}`}>
         <form onSubmit={handleSearch} className="nav-search-form container">
           <Search size={17} className="ns-icon" />
-          <input autoFocus={searchOpen} type="text" placeholder="Search movies, anime..." value={q} onChange={e => setQ(e.target.value)} />
+          <input autoFocus={searchOpen} type="text" placeholder="Search movies, shows, anime..." value={q} onChange={e => setQ(e.target.value)} />
           <button type="submit" className="ns-btn">Search</button>
         </form>
       </div>

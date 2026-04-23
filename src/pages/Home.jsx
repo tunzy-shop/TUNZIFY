@@ -13,22 +13,24 @@ export default function Home() {
   }, [])
 
   const heroItems = [
-    ...(data?.fzmovies || []),
-    ...(data?.streamx || []),
-    ...(data?.animeTrending || []),
-  ].filter(Boolean).slice(0, 8)
+    ...(data?.trendMovies || []),
+    ...(data?.trendTv || []),
+  ].slice(0, 8)
 
   return (
     <main className="home">
       <Hero items={heroItems} loading={loading} />
       <div className="home-sections">
-        <SectionRow title="Latest on FZMovies" emoji="🎬" items={data?.fzmovies || []} loading={loading} viewAllLink="/movies" />
-        <SectionRow title="Stream-X Movies" emoji="▶️" items={data?.streamx || []} loading={loading} viewAllLink="/movies" />
-        <SectionRow title="FlixZone Trending" emoji="🔥" items={data?.flixzone || []} loading={loading} viewAllLink="/movies" />
-        <SectionRow title="Nkiri Movies" emoji="🎥" items={data?.nkiri || []} loading={loading} viewAllLink="/movies" />
-        <div className="anime-divider"><span>🎌 ANIME ZONE</span></div>
-        <SectionRow title="Trending Anime" emoji="📈" items={data?.animeTrending || []} loading={loading} viewAllLink="/anime" />
-        <SectionRow title="Top Rated Anime" emoji="⭐" items={data?.animeTop || []} loading={loading} viewAllLink="/anime" />
+        <SectionRow title="Trending Movies" emoji="🔥" items={data?.trendMovies || []} loading={loading} viewAllLink="/movies" />
+        <SectionRow title="Trending TV Shows" emoji="📺" items={data?.trendTv || []} loading={loading} viewAllLink="/tv" />
+        <SectionRow title="Now Playing" emoji="🎬" items={data?.nowPlaying || []} loading={loading} viewAllLink="/movies" />
+        <SectionRow title="Action & Adventure" emoji="💥" items={data?.action || []} loading={loading} viewAllLink="/movies" />
+        <SectionRow title="Popular Movies" emoji="⭐" items={data?.popular || []} loading={loading} viewAllLink="/movies" />
+        <SectionRow title="Horror Movies" emoji="👻" items={data?.horror || []} loading={loading} viewAllLink="/movies" />
+        <div className="section-divider"><span>🎌 ANIME & ASIAN</span></div>
+        <SectionRow title="Anime" emoji="🎌" items={data?.anime || []} loading={loading} viewAllLink="/anime" />
+        <SectionRow title="K-Drama" emoji="🇰🇷" items={data?.kdrama || []} loading={loading} viewAllLink="/tv" />
+        <SectionRow title="Top Rated" emoji="🏆" items={data?.topRated || []} loading={loading} viewAllLink="/movies" />
       </div>
     </main>
   )

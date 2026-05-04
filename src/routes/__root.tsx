@@ -1,7 +1,14 @@
-import { Outlet, createRootRoute, Link } from "@tanstack/react-router";
+import {
+  Outlet,
+  createRootRoute,
+  HeadContent,
+  Scripts,
+  Link,
+} from "@tanstack/react-router";
+
+import appCss from "../styles.css?url";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import "@/styles.css";
 
 function NotFoundComponent() {
   return (
@@ -24,8 +31,47 @@ function NotFoundComponent() {
 }
 
 export const Route = createRootRoute({
+  head: () => ({
+    meta: [
+      { charSet: "utf-8" },
+      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { title: "TUNZIFY — Stream & Download Movies, Series & Anime" },
+      {
+        name: "description",
+        content:
+          "Watch trending movies, series and anime free on TUNZIFY. Premium streaming experience in blue, gold & black.",
+      },
+      { name: "theme-color", content: "#0a1020" },
+      { property: "og:title", content: "TUNZIFY — Stream Anything" },
+      {
+        property: "og:description",
+        content: "Stream and download the latest movies, TV shows and anime.",
+      },
+      { property: "og:type", content: "website" },
+    ],
+    links: [{ rel: "stylesheet", href: appCss }],
+  }),
+  shellComponent: RootShell,
+  component: RootComponent,
   notFoundComponent: NotFoundComponent,
-  component: () => (
+});
+
+function RootShell({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en" className="dark">
+      <head>
+        <HeadContent />
+      </head>
+      <body>
+        {children}
+        <Scripts />
+      </body>
+    </html>
+  );
+}
+
+function RootComponent() {
+  return (
     <>
       <Navbar />
       <main className="min-h-screen pt-16">
@@ -33,5 +79,5 @@ export const Route = createRootRoute({
       </main>
       <Footer />
     </>
-  ),
-});
+  );
+}

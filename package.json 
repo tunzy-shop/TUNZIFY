@@ -1,6 +1,5 @@
 {
-  "name": "tunzify",
-  "private": true,
+  "name": "tunzyify",
   "version": "1.0.0",
   "type": "module",
   "scripts": {
@@ -9,20 +8,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@tanstack/react-router": "^1.114.23",
-    "lucide-react": "^0.471.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "@tanstack/react-router": "^1.32.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@tailwindcss/vite": "^4.1.3",
-    "@tanstack/router-plugin": "^1.114.23",
-    "@types/react": "^19.0.0",
-    "@types/react-dom": "^19.0.0",
-    "@vitejs/plugin-react": "^4.3.4",
-    "tailwindcss": "^4.1.3",
-    "tw-animate-css": "^1.2.5",
-    "typescript": "^5.7.2",
-    "vite": "^6.2.0"
+    "@tanstack/router-vite-plugin": "^1.32.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@vitejs/plugin-react": "^4.0.0",
+    "typescript": "^5.0.0",
+    "vite": "^5.0.0"
   }
 }

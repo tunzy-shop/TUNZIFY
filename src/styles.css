@@ -1,0 +1,130 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * TUNZIFY design system — Blue · Gold · Black
+ * Dark luxury streaming theme.
+ */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
+  --color-blue-deep: var(--blue-deep);
+  --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
+}
+
+:root {
+  --radius: 0.75rem;
+
+  /* Brand */
+  --background: oklch(0.13 0.02 260);          /* near-black, hint of blue */
+  --foreground: oklch(0.97 0.01 90);            /* warm off-white */
+  --surface: oklch(0.18 0.025 260);             /* card/surface */
+  --surface-elevated: oklch(0.22 0.03 260);
+
+  --primary: oklch(0.62 0.21 255);              /* electric blue */
+  --primary-foreground: oklch(0.99 0 0);
+  --blue-deep: oklch(0.42 0.18 258);
+
+  --gold: oklch(0.82 0.16 86);                  /* rich gold */
+  --gold-soft: oklch(0.88 0.10 88);
+
+  --card: var(--surface);
+  --card-foreground: var(--foreground);
+  --popover: var(--surface-elevated);
+  --popover-foreground: var(--foreground);
+
+  --secondary: oklch(0.24 0.03 260);
+  --secondary-foreground: var(--foreground);
+  --muted: oklch(0.22 0.025 260);
+  --muted-foreground: oklch(0.70 0.02 260);
+  --accent: var(--gold);
+  --accent-foreground: oklch(0.15 0.02 260);
+  --destructive: oklch(0.62 0.22 25);
+  --destructive-foreground: oklch(0.99 0 0);
+
+  --border: oklch(0.28 0.03 260);
+  --input: oklch(0.24 0.03 260);
+  --ring: var(--primary);
+
+  /* Gradients & effects */
+  --gradient-hero: linear-gradient(135deg, oklch(0.13 0.02 260) 0%, oklch(0.22 0.10 258) 60%, oklch(0.13 0.02 260) 100%);
+  --gradient-gold: linear-gradient(135deg, oklch(0.88 0.13 88), oklch(0.72 0.16 70));
+  --gradient-blue: linear-gradient(135deg, oklch(0.62 0.21 255), oklch(0.42 0.18 258));
+  --shadow-gold: 0 10px 30px -10px color-mix(in oklab, var(--gold) 45%, transparent);
+  --shadow-blue: 0 10px 40px -10px color-mix(in oklab, var(--primary) 50%, transparent);
+  --shadow-elevated: 0 20px 60px -20px oklch(0 0 0 / 0.6);
+}
+
+/* Always dark — TUNZIFY only ships luxury dark mode */
+.dark, html { color-scheme: dark; }
+
+@layer base {
+  * { border-color: var(--color-border); }
+  html, body { background-color: var(--color-background); color: var(--color-foreground); }
+  body { font-family: 'Inter', system-ui, -apple-system, sans-serif; -webkit-font-smoothing: antialiased; }
+  ::selection { background: var(--gold); color: oklch(0.15 0.02 260); }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: var(--surface); }
+  ::-webkit-scrollbar-thumb { background: var(--blue-deep); border-radius: 6px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+}
+
+@layer utilities {
+  .container-x { width: 100%; max-width: 1280px; margin-inline: auto; padding-inline: 1rem; }
+  @media (min-width: 768px) { .container-x { padding-inline: 2rem; } }
+
+  .text-gold { color: var(--gold); }
+  .bg-gold { background: var(--gold); }
+  .bg-gradient-gold { background: var(--gradient-gold); }
+  .bg-gradient-blue { background: var(--gradient-blue); }
+  .bg-gradient-hero { background: var(--gradient-hero); }
+  .shadow-gold { box-shadow: var(--shadow-gold); }
+  .shadow-blue { box-shadow: var(--shadow-blue); }
+
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+  .scrollbar-hide { scrollbar-width: none; }
+
+  .glass { background: color-mix(in oklab, var(--surface) 60%, transparent); backdrop-filter: blur(14px); }
+
+  .skeleton {
+    background: linear-gradient(90deg, var(--surface) 0%, var(--surface-elevated) 50%, var(--surface) 100%);
+    background-size: 200% 100%;
+    animation: shimmer 1.6s infinite;
+  }
+  @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+  .fade-up { animation: fadeUp 0.5s ease both; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+}
